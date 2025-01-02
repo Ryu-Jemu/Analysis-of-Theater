@@ -14,7 +14,7 @@ data_extended = {
 }
 
 plt.rcParams['font.family'] = 'Malgun Gothic'  # Windows 사용자
-
+plt.rcParams['font.family'] = 'AppleGothic'  # Mac 사용자
 
 years = [2020, 2021, 2022]
 fig, axes = plt.subplots(1, 3, figsize = (15,5))
