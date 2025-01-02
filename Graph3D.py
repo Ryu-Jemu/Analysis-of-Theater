@@ -12,6 +12,7 @@ data = {
 df = pd.DataFrame(data)
 
 plt.rcParams['font.family'] = 'Malgun Gothic'  # For Windows users
+plt.rcParams['font.family'] = 'AppleGothic'  # Mac 사용자
 
 #Generate 3D graph
 fig = plt.figure()
