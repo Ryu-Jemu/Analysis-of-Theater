@@ -6,8 +6,8 @@ import webbrowser
 from folium.plugins import MarkerCluster
 
 def get_coordinates(address, api_key):
-    url = "https://dapi.kakao.com/v2/local/search/address.json"
-    headers = {"Authorization": f"KakaoAK {api_key}"}
+    url = "_____" #Enter api address
+    headers = {"Authorization": f"KakaoAK {api_key}"} # Modify according to your api key
     params = {"query": address}
     
     response = requests.get(url, headers=headers, params=params)
@@ -26,7 +26,7 @@ def load_station_coordinates(file_path):
         raise KeyError("열 이름 '역위도' 또는 '역경도'가 없습니다.")
     return data[['역위도', '역경도']].dropna()
 
-API_KEY = "0eb2cbe6aab31c516ce4175b6bf6b102"
+API_KEY = "_____" #Enter your api key
 file_path = "Domestic_theater.xlsx"
 sheet_name = '2023년 전국 극장 리스트'
 data = pd.read_excel(file_path, sheet_name=sheet_name, engine='openpyxl')
