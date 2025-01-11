@@ -3,8 +3,8 @@ import folium
 import webbrowser
 
 def get_coordinates_kakao(address, api_key):
-    url = "https://dapi.kakao.com/v2/local/search/address.json"
-    headers = {"Authorization": f"KakaoAK {api_key}"}
+    url = "_____" # Enter api address
+    headers = {"Authorization": f"KakaoAK {api_key}"} # Modify according to your api key
     params = {"query": address}
     
     response = requests.get(url, headers=headers, params=params)
@@ -21,7 +21,7 @@ def get_coordinates_kakao(address, api_key):
         return None  # Failed
 
 # API Key & Data of each theather
-api_key = "0eb2cbe6aab31c516ce4175b6bf6b102"
+api_key = "_____" #Enter your api key
 theaters = {
     "CGV": [
         "서울특별시 용산구 한강대로23길 55",

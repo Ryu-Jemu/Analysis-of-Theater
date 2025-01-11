@@ -7,11 +7,11 @@ from collections import Counter
 import csv
 
 # API authentication credentials
-client_id = "SfNDdYGDu6wGNk2sLSf7"  
-client_secret = "gaPwbWbK8i"  
+client_id = "_____"  
+client_secret = "_____"  
 
 # API endpoint for Naver Blog Search
-url = "https://openapi.naver.com/v1/search/blog.json"
+url = "______" 
 
 # Search keyword
 query = "메가박스" 
