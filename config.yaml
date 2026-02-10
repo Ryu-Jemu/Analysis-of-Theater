@@ -1,0 +1,33 @@
+naver_api:
+  client_id: YOUR_NAVER_CLIENT_ID
+  client_secret: YOUR_NAVER_CLIENT_SECRET
+  blog_search_url: https://openapi.naver.com/v1/search/blog.json
+  query: 메가박스
+  display: 100
+  start: 1
+  sort: sim
+kakao_api:
+  rest_api_key: YOUR_KAKAO_REST_API_KEY
+  geocode_url: https://dapi.kakao.com/v2/local/search/address.json
+paths:
+  theater_xlsx: data_theaters_domestic.xlsx
+  station_xlsx: data_stations_domestic.xlsx
+  movie_indicators_csv: data_movie_indicators_by_year.csv
+  output_dir: outputs
+pipeline:
+  run_maps: true
+  run_text_analysis: true
+  run_movie_visualization: true
+  run_3d_analysis: true
+  run_consumption_share_analysis: true
+outputs:
+  map_theaters_and_stations: map_theaters_stations.html
+  map_spot: map_spot_theaters_malls.html
+  movie_releases_plot: movie_releases_by_year.png
+  movie_audience_plot: movie_audience_by_year.png
+  movie_sales_plot: movie_sales_by_year.png
+  plot_3d_trendlines: theater_3d_trendlines.png
+  consumption_share_correlation: consumption_share_correlation.png
+  text_keywords_csv: naver_keywords.csv
+  text_wordcloud: naver_wordcloud.png
+  report_md: report.md
