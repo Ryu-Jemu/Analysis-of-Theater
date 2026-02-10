@@ -18,12 +18,14 @@ import folium
 import pandas as pd
 import requests
 import yaml
+from dotenv import load_dotenv
 from folium.plugins import MarkerCluster
 
 
 ROOT = Path(__file__).resolve().parent
 CONFIG_PATH = ROOT / "config.yaml"
 OUTPUT_DIR_DEFAULT = ROOT / "outputs"
+load_dotenv(ROOT / ".env")
 
 
 def load_config() -> dict:

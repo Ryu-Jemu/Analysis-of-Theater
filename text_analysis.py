@@ -12,19 +12,22 @@ from __future__ import annotations
 
 import csv
 import os
+import re
 from collections import Counter
 from pathlib import Path
 
 import matplotlib.pyplot as plt
 import requests
 import yaml
-from konlpy.tag import Okt
+from dotenv import load_dotenv
+from matplotlib import font_manager
 from wordcloud import WordCloud
 
 
 ROOT = Path(__file__).resolve().parent
 CONFIG_PATH = ROOT / "config.yaml"
 OUTPUT_DIR_DEFAULT = ROOT / "outputs"
+load_dotenv(ROOT / ".env")
 
 
 def load_config(path: Path = CONFIG_PATH) -> dict:
@@ -43,6 +46,46 @@ def get_env_or_config(cfg: dict, key: str, env_key: str) -> str:
     if isinstance(cur, str) and cur and not cur.startswith("YOUR_"):
         return cur
     return ""
+
+
+def extract_tokens(text: str) -> list[str]:
+    try:
+        from konlpy.tag import Okt
+
+        return Okt().nouns(text)
+    except Exception:
+        # JVM/KoNLPy 미설치 환경을 위한 간단한 폴백 토큰화
+        return re.findall(r"[가-힣A-Za-z0-9]{2,}", text)
+
+
+def resolve_korean_font_path() -> str | None:
+    env_path = os.getenv("KOREAN_FONT_PATH", "").strip()
+    if env_path and Path(env_path).exists():
+        return env_path
+
+    preferred_names = [
+        "NanumGothic",
+        "Nanum Gothic",
+        "Apple SD Gothic Neo",
+        "AppleGothic",
+        "Malgun Gothic",
+        "Noto Sans CJK KR",
+        "Noto Sans KR",
+    ]
+    for name in preferred_names:
+        try:
+            path = font_manager.findfont(name, fallback_to_default=False)
+            if path and Path(path).exists():
+                return path
+        except Exception:
+            continue
+
+    for f in font_manager.fontManager.ttflist:
+        name = (f.name or "").lower()
+        if any(k in name for k in ["nanum", "gothic", "malgun", "noto sans cjk kr", "applegothic"]):
+            if f.fname and Path(f.fname).exists():
+                return f.fname
+    return None
 
 
 def main() -> None:
@@ -86,9 +129,8 @@ def main() -> None:
 
     text = " ".join(text_data)
 
-    # 형태소 분석(명사 추출)
-    okt = Okt()
-    tokens = okt.nouns(text)
+    # 형태소 분석(명사 추출). 실패 시 정규식 기반 폴백 사용.
+    tokens = extract_tokens(text)
 
     stopwords = {
         "CGV", "롯데시네마", "메가박스", "영화", "상영관", "극장", "좌석",
@@ -112,8 +154,13 @@ def main() -> None:
 
     # 워드클라우드 이미지 저장
     plt.rcParams["axes.unicode_minus"] = False
-    # 폰트는 OS/환경마다 다르므로, 필요 시 사용자 환경에 맞게 조정
-    font_path = os.getenv("KOREAN_FONT_PATH")  # 예: C:\Windows\Fonts\malgun.ttf
+    font_path = resolve_korean_font_path()
+    if not font_path:
+        raise RuntimeError(
+            "한글 폰트를 찾지 못했습니다. KOREAN_FONT_PATH를 설정하거나 "
+            "NanumGothic/AppleGothic 계열 폰트를 설치하세요."
+        )
+    plt.rcParams["font.family"] = font_manager.FontProperties(fname=font_path).get_name()
     wc = WordCloud(
         font_path=font_path,
         background_color="white",

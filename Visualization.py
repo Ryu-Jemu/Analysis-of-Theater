@@ -1,9 +1,11 @@
 from __future__ import annotations
 
+import os
 from pathlib import Path
 import yaml
 import pandas as pd
 import matplotlib.pyplot as plt
+from matplotlib import font_manager
 
 
 ROOT = Path(__file__).resolve().parent
@@ -13,6 +15,38 @@ CONFIG_PATH = ROOT / "config.yaml"
 def load_config() -> dict:
     with open(CONFIG_PATH, "r", encoding="utf-8") as f:
         return yaml.safe_load(f)
+
+
+def _resolve_korean_font_path() -> str | None:
+    env_path = os.getenv("KOREAN_FONT_PATH", "").strip()
+    if env_path and Path(env_path).exists():
+        return env_path
+
+    preferred_names = [
+        "NanumGothic",
+        "Nanum Gothic",
+        "Apple SD Gothic Neo",
+        "AppleGothic",
+        "Malgun Gothic",
+        "Noto Sans CJK KR",
+        "Noto Sans KR",
+    ]
+    for name in preferred_names:
+        try:
+            path = font_manager.findfont(name, fallback_to_default=False)
+            if path and Path(path).exists():
+                return path
+        except Exception:
+            continue
+    return None
+
+
+def _apply_plot_font() -> None:
+    plt.rcParams["axes.unicode_minus"] = False
+    font_path = _resolve_korean_font_path()
+    if font_path:
+        font_name = font_manager.FontProperties(fname=font_path).get_name()
+        plt.rcParams["font.family"] = font_name
 
 
 def _plot_two_series(df: pd.DataFrame, x_col: str, y_col: str, cat_col: str, out_path: Path, title: str, ylabel: str) -> None:
@@ -54,7 +88,7 @@ def main() -> None:
     data["Year of 연도"] = data["Year of 연도"].astype(int)
     data["분류"] = data["분류"].replace({"한국영화": "Korean Films", "외국영화": "Foreign Films"})
 
-    plt.rcParams["axes.unicode_minus"] = False
+    _apply_plot_font()
 
     _plot_two_series(
         data,

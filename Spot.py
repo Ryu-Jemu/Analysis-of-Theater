@@ -15,11 +15,13 @@ from pathlib import Path
 import folium
 import requests
 import yaml
+from dotenv import load_dotenv
 
 
 ROOT = Path(__file__).resolve().parent
 CONFIG_PATH = ROOT / "config.yaml"
 OUTPUT_DIR_DEFAULT = ROOT / "outputs"
+load_dotenv(ROOT / ".env")
 
 
 def load_config() -> dict:

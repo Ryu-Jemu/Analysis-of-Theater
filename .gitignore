@@ -9,6 +9,11 @@ venv/
 env/
 ENV/
 
+# Environment files (secrets)
+.env
+.env.*
+!.env.example
+
 # Build/test artifacts
 build/
 dist/
