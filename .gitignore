@@ -37,4 +37,6 @@ htmlcov/
 Thumbs.db
 
 # Project outputs
-outputs/
+outputs/*
+!outputs/.gitkeep
+!outputs/dashboard.html

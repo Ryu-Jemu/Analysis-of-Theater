@@ -5,6 +5,13 @@
 - 실행: `./run.sh`
 - 최종 결과물: `outputs/dashboard.html` (단일 파일)
 
+## 최근 결과물 (업로드용)
+- 대시보드 파일: [`outputs/dashboard.html`](outputs/dashboard.html)
+- 마지막 생성 일시: `2026-02-11 03:52:39 KST`
+- 마지막 문서 업데이트: `2026-02-11 04:03:51 KST`
+
+GitHub README에서는 HTML iframe을 직접 렌더링하지 않으므로, 위 링크로 대시보드를 열어 결과를 확인합니다.
+
 ## 실행 방법
 ```bash
 pip install -r requirements.txt
